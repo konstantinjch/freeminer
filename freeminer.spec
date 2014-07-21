@@ -74,12 +74,6 @@ install -d -m 0755 %{buildroot}%{_sharedstatedir}/%{name}
 mkdir -p %{buildroot}%{_unitdir}/
 install -m 0644 %{SOURCE1} %{buildroot}%{_unitdir}
 
-%pre server
-getent group %{name} &gt;/dev/null || groupadd -r %{name}
-getent passwd %{name} &gt;/dev/null || \
-    useradd -r -g %{name} -d %{_sharedstatedir}/%{name} -s /sbin/nologin \
-    -c "Freeminer multiplayer server" %{name}
-exit 0
 
 %post server
 %systemd_post %{name}@default.service
