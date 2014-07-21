@@ -49,11 +49,6 @@ Requires(postun): systemd
 freeminer multiplayer server. This package does not require X Window System
 
 
-%description
-Freeminer is an open source sandbox game
-
-
-
 %prep
 %setup -q 
 %patch0 -p1
