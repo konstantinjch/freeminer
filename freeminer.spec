@@ -75,7 +75,7 @@ install -m 0644 %{SOURCE1} %{buildroot}%{_unitdir}
 getent group %{name} &gt;/dev/null || groupadd -r %{name}
 getent passwd %{name} &gt;/dev/null || \
     useradd -r -g %{name} -d %{_sharedstatedir}/%{name} -s /sbin/nologin \
-    -c "Minetest multiplayer server" %{name}
+    -c "Freeminer multiplayer server" %{name}
 exit 0
 
 %post server
@@ -88,7 +88,6 @@ exit 0
 %systemd_postun_with_restart %{name}@default.service 
 
 %files 
-%defattr(-,root,root,-)
 
 %doc  README.md LICENSE.txt src/jthread/LICENSE.MIT  doc/lua_api.txt
 
