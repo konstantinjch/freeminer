@@ -37,7 +37,7 @@ blocks with optional hostile creatures, features both single and the
 network multiplayer mode. There are no in-game sounds yet
 
 %package server
-Summary: freeminer  multiplayer server
+Summary: freeminer multiplayer server
 
 Requires(pre):    shadow-utils
 Requires(post):   systemd
@@ -70,7 +70,7 @@ popd
 pushd build
   %make_install
 popd
-install -Dpm 0644 doc/freeminer.6 %{buildroot}%{_datadir}/man/man6/freeminer.6.gz
+install -Dpm 0644 doc/freeminer.6 %{buildroot}%{_datadir}/man/man6/%{name}.6.gz
 
 # Systemd unit file
 mkdir -p %{buildroot}%{_unitdir}/
