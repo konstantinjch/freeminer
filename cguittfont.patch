@@ -1,0 +1,13 @@
+diff -uNr freeminer-0.4.9.3/src/cguittfont/CMakeLists.txt freeminer-0.4.9.3-1/src/cguittfont/CMakeLists.txt
+--- freeminer-0.4.9.3/src/cguittfont/CMakeLists.txt	2014-01-22 21:36:09.000000000 +0400
++++ freeminer-0.4.9.3-1/src/cguittfont/CMakeLists.txt	2014-07-21 19:14:21.941297937 +0400
+@@ -2,7 +2,8 @@
+ #   Do not add CGUITTFont.cpp to the line below.
+ #   xCGUITTFont.cpp is a wrapper file that includes
+ #   additional required headers.
+-add_library(cguittfont xCGUITTFont.cpp)
++#add_library(cguittfont xCGUITTFont.cpp)
++add_library(cguittfont STATIC xCGUITTFont.cpp)
+ 
+ if(FREETYPE_PKGCONFIG_FOUND)
+ 	set_target_properties(cguittfont
