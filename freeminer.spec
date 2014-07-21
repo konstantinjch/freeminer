@@ -5,7 +5,7 @@ Summary:        Freeminer is an open source sandbox game inspired by [Minecraft]
 
 License:        LGPLv2+ and CC BY-SA 3.0 and MIT
 URL:             http://freeminer.org/
-Source0:       https://github.com/freeminer/freeminer/archive/0.4.9.3.tar.gz
+Source0:       https://github.com/freeminer/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
 Source1:  %{name}@.service
 
 
