@@ -65,7 +65,10 @@ popd
 pushd build
   %make_install
 popd
-install -Dpm 0644 doc/freeminer.6 %{buildroot}%{_datadir}/man/man6/%{name}.6.gz
+install -Dpm 0644 doc/%{name}.6 %{buildroot}%{_datadir}/man/man6/%{name}.6.gz
+
+
+install -d -m 0755 %{buildroot}%{_sharedstatedir}/%{name}
 
 # Systemd unit file
 mkdir -p %{buildroot}%{_unitdir}/
