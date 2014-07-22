@@ -76,7 +76,9 @@ install -d -m 0755 %{buildroot}%{_sharedstatedir}/%{name}
 mkdir -p %{buildroot}%{_unitdir}/
 install -m 0644 %{SOURCE1} %{buildroot}%{_unitdir}
 
+%check
 
+desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 %post server
 %systemd_post %{name}@default.service
 
