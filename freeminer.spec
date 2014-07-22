@@ -72,9 +72,11 @@ install -Dpm 0644 doc/%{name}.6 %{buildroot}%{_datadir}/man/man6/%{name}.6.gz
 
 install -d -m 0755 %{buildroot}%{_sharedstatedir}/%{name}
 
+
 # Systemd unit file
-mkdir -p %{buildroot}%{_unitdir}/
-install -m 0644 %{SOURCE1} %{buildroot}%{_unitdir}
+mkdir -p $RPM_BUILD_ROOT%{_unitdir}
+cp -p %{SOURCE1} $RPM_BUILD_ROOT%{_unitdir}
+
 
 %check
 
