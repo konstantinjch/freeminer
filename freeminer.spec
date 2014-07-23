@@ -4,9 +4,9 @@ Release:        1%{?dist}
 Summary:        Freeminer is an open source sandbox game inspired by [Minecraft](https://minecraft.net/)
 
 License:        LGPLv2+ and CC BY-SA  and MIT
-URL:             http://freeminer.org/
-Source0:       https://github.com/freeminer/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
-Source1:  %{name}@.service
+URL:            http://freeminer.org/
+Source0:        https://github.com/freeminer/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
+Source1:        %{name}@.service
 
 
 # https://github.com/minetest/minetest/pull/954
@@ -65,9 +65,9 @@ popd
 
 %install
 pushd build
-  %make_install
+%make_install
 popd
-install -Dpm 0644 doc/%{name}.6 %{buildroot}%{_datadir}/man/man6/%{name}.6.gz
+install -Dpm 0644 doc/%{name}.6 %{buildroot}%{_datadir}/man/man6/%{name}.6
 
 
 install -d -m 0755 %{buildroot}%{_sharedstatedir}/%{name}
