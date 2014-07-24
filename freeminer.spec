@@ -114,7 +114,12 @@ install -d -m 0775 %{buildroot}%{_sharedstate dir}/%{name}/
 
 
 %changelog
-* Mon Jul 14 2014 vkk
+
+* Mon Jul 25 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 1.1.0-1
+- mega-update spec
+
+* Mon Jul 14 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 1.1.0-0
+- Initial release
 
 
 - 
