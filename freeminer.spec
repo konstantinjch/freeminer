@@ -4,17 +4,14 @@ Release:        1%{?dist}
 Summary:        Freeminer is an open source sandbox game inspired by [Minecraft](https://minecraft.net/)
 
 License:        LGPLv2+ and CC BY-SA  and MIT
-URL:            http://freeminer.org/
-Source0:        https://github.com/freeminer/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
+URL:             http://freeminer.org/
+Source0:       https://github.com/freeminer/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
 Source1:        %{name}@.service
 
 
 # https://github.com/minetest/minetest/pull/954
 Patch0:   0001-FindJson.cmake-now-will-correctly-find-system-module.patch
 Patch1:   cguittfont.patch
-
-#BuildRequires:  make automake gcc gcc-c++ kernel-devel irrlicht-devel bzip2-devel libpng-devel libjpeg-turbo-devel freetype-devel libXxf86vm-devel mesa-libGL-devel sqlite-devel libvorbis-devel openal-soft-devel libcurl-devel luajit-devel leveldb-devel snappy-devel gettext-devel
-Provides: bundled(jthread)
 
 BuildRequires:  cmake 
 BuildRequires:  irrlicht-devel
@@ -26,11 +23,11 @@ BuildRequires:  openal-soft-devel
 BuildRequires:  libvorbis-devel
 BuildRequires:  jsoncpp-devel
 BuildRequires:  libcurl-devel
-BuildRequires:  luajit-devel
-
+BuildRequires:  luajit-devel  
 
 
 Requires:       %{name}-server = %{version}-%{release}
+
 
 %description 
 Game of mining, crafting and building in the infinite world of cubic
@@ -55,10 +52,12 @@ freeminer multiplayer server. This package does not require X Window System
 %patch0 -p1
 %patch1 -p1
 
+# purge bundled jsoncpp and lua
+rm -rf src/lua src/json
 
 %build
 pushd build
-%cmake ../
+%cmake ../ -DDEBUG:BOOL=TRUE
 
 make  %{?_smp_mflags}  
 popd
@@ -67,50 +66,55 @@ popd
 pushd build
 %make_install
 popd
-install -Dpm 0644 doc/%{name}.6 %{buildroot}%{_datadir}/man/man6/%{name}.6
 
-
+install -Dpm 0644 doc/%{name}.6 %{buildroot}%{_prefix}/man/man6/%{name}.6
 install -d -m 0755 %{buildroot}%{_sharedstatedir}/%{name}
 
 
 # Systemd unit file
-mkdir -p $RPM_BUILD_ROOT%{_unitdir}
-cp -p %{SOURCE1} $RPM_BUILD_ROOT%{_unitdir}
+mkdir -p %{buildroot}%{_unitdir}
+cp -p %{SOURCE1} %{buildroot}%{_unitdir}
 
+install -d -m 0775 %{buildroot}%{_sysconfdir}/%{name}/
+install    -m 0775 %{name}.conf.example %{buildroot}%{_sysconfdir}/%{name}/default.conf
+install -d -m 0775 %{buildroot}%{_sharedstate dir}/%{name}/
 
-%check
-
-desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 %post server
-%systemd_post %{name}@default.service
+
+%systemd_post %{name}@.service
 
 %preun server
-%systemd_preun %{name}@default.service
+
+%systemd_preun %{name}@.service
 
 %postun server
-%systemd_postun_with_restart %{name}@default.service 
+ 
+%systemd_postun_with_restart %{name}@.service
 
 %files 
 
-%doc  README.md LICENSE.txt src/jthread/LICENSE.MIT  doc/lua_api.txt
+%doc   LICENSE.txt src/jthread/LICENSE.MIT README.md doc/lua_api.txt 
+#README.md doc/lua_api.txt
 
-%{_bindir}/%{name}
-%{_datadir}/%{name}
-
-%{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
+%{_usr}/bin/%{name}
+%{_usr}/man/man6/%{name}.6.gz
 %{_datadir}/applications/%{name}.desktop
+%{_datadir}/man/man6/%{name}.6.gz
+%{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
+%{_datadir}/%{name}/
 
-%{_mandir}/man6/%{name}.*
 
 
 %files server
-%{_bindir}/%{name}server
-%{_mandir}/man6/%{name}server.*
-%{_unitdir}/%{name}@.service
 
+%{_sysconfdir}/%{name}/default.conf
+%{_bindir}/%{name}server
+%{_datarootdir}/man/man6/%{name}server.*
+%{_unitdir}/%{name}@.service
 
 
 %changelog
 * Mon Jul 14 2014 vkk
+
 
 - 
