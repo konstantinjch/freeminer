@@ -66,7 +66,6 @@ pushd build
   %make_install
 popd
 
-install -Dpm 0644 doc/%{name}.6 %{buildroot}%{_prefix}/man/man6/%{name}.6
 install -d -m 0755 %{buildroot}%{_sharedstatedir}/%{name}
 
 
