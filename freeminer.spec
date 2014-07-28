@@ -7,6 +7,7 @@ License:        LGPLv2+ and CC-BY-SA and MIT
 URL:            http://freeminer.org/
 Source0:        https://github.com/freeminer/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
 Source1:        %{name}@.service
+Source2:        https://github.com/freeminer/default/archive/%{version}/%{name}_default-%{version}.tar.gz
 
 
 # https://github.com/minetest/minetest/pull/954
@@ -52,6 +53,11 @@ freeminer multiplayer server. This package does not require X Window System
 %patch0 -p1
 %patch1 -p1
 
+pushd games
+  tar xf %{SOURCE2}
+  mv default-%{version}/* default/
+popd
+
 # purge bundled jsoncpp and lua
 rm -rf src/lua src/json
 
@@ -74,7 +80,7 @@ mkdir -p %{buildroot}%{_unitdir}
 cp -p %{SOURCE1} %{buildroot}%{_unitdir}
 
 install -d -m 0775 %{buildroot}%{_sysconfdir}/%{name}/
-install    -m 0775 %{name}.conf.example %{buildroot}%{_sysconfdir}/%{name}/default.conf
+#install    -m 0775 %{name}.conf.example %{buildroot}%{_sysconfdir}/%{name}/default.conf
 install -d -m 0775 %{buildroot}%{_sharedstatedir}/%{name}/
 
 %pre
