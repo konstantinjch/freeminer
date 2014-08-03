@@ -1,6 +1,6 @@
 Name:           freeminer
 Version:        0.4.9.3
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Freeminer is an open source sandbox game inspired by [Minecraft](https://minecraft.net/)
 
 License:        LGPLv2+ and CC-BY-SA and MIT
@@ -134,8 +134,8 @@ exit 0
 
 %changelog
 
-#* Mon Jul 25 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-2
-#- mega-update spec
+* Mon Jul 25 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-2
+- mega-update spec
 
 * Mon Jul 14 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-1
 - Initial release
