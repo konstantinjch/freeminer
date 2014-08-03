@@ -14,6 +14,10 @@ Source2:        https://github.com/freeminer/default/archive/%{version}/%{name}_
 Patch0:         0001-FindJson.cmake-now-will-correctly-find-system-module.patch
 Patch1:         cguittfont.patch
 
+BuildRequires: make automake gcc gcc-c++ kernel-devel    
+BuildRequires: freetype-devel libXxf86vm-devel mesa-libGL-devel sqlite-devel libvorbis-devel openal-soft-devel
+BuildRequires: leveldb-devel snappy-devel gettext-devel
+
 BuildRequires:  cmake 
 BuildRequires:  irrlicht-devel
 BuildRequires:  bzip2-devel gettext-devel sqlite-devel
@@ -63,7 +67,7 @@ rm -rf src/lua src/json
 
 %build
 pushd build
-  %cmake ../ -DDEBUG:BOOL=TRUE
+  %cmake ../ -DRUN_IN_PLACE=0 -DDEBUG:BOOL=TRUE
   make  %{?_smp_mflags}  
 popd
 
@@ -106,13 +110,13 @@ exit 0
 %files 
 
 %doc   LICENSE.txt src/jthread/LICENSE.MIT README.md doc/lua_api.txt 
-#README.md doc/lua_api.txt
 
 %{_bindir}/%{name}
-%{_mandir}/man6/%{name}.6.gz
+%{_datadir}/%{name}/
+%{_mandir}/man6/%{name}.*
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
-%{_datadir}/%{name}/
+
 
 
 
@@ -124,10 +128,14 @@ exit 0
 %{_unitdir}/%{name}@.service
 
 
+%attr(-,%{name},%{name})%{_sharedstatedir}/%{name}/
+
+
+
 %changelog
 
-* Mon Jul 25 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-2
-- mega-update spec
+#* Mon Jul 25 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-2
+#- mega-update spec
 
 * Mon Jul 14 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-1
 - Initial release
