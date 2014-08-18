@@ -134,6 +134,8 @@ exit 0
 
 %changelog
 
+* Mon Aug 19 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-3
+- mega-update spec 
 
 * Mon Aug 03 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-3
 - add -DRUN_IN_PLACE=0 
