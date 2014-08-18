@@ -1,0 +1,31 @@
+diff -uNr freeminer-0.4.9.3/src/json/CMakeLists.txt freeminer-0.4.9.3-1/src/json/CMakeLists.txt
+--- freeminer-0.4.9.3/src/json/CMakeLists.txt   2014-01-22 21:36:09.000000000 +0400
++++ freeminer-0.4.9.3-1/src/json/CMakeLists.txt 2014-08-19 01:52:26.741265693 +0400
+@@ -6,7 +6,8 @@
+        set(json_platform_LIBS "")
+ endif( UNIX )
+ 
+-add_library(jsoncpp ${json_SRCS})
++#add_library(jsoncpp ${json_SRCS})
++add_library(jsoncpp STATIC ${json_SRCS})
+ 
+ target_link_libraries(
+        jsoncpp
+diff -uNr freeminer-0.4.9.3/src/json/CMakeLists.txt~ freeminer-0.4.9.3-1/src/json/CMakeLists.txt~
+--- freeminer-0.4.9.3/src/json/CMakeLists.txt~  1970-01-01 03:00:00.000000000 +0300
++++ freeminer-0.4.9.3-1/src/json/CMakeLists.txt~        2014-01-22 21:36:09.000000000 +0400
+@@ -0,0 +1,14 @@
++if( UNIX )
++       set(json_SRCS jsoncpp.cpp)
++       set(json_platform_LIBS "")
++else( UNIX )
++       set(json_SRCS jsoncpp.cpp)
++       set(json_platform_LIBS "")
++endif( UNIX )
++
++add_library(jsoncpp ${json_SRCS})
++
++target_link_libraries(
++       jsoncpp
++       ${json_platform_LIBS}
++)
