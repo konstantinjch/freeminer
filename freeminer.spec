@@ -1,6 +1,6 @@
 Name:           freeminer
 Version:        0.4.9.3
-Release:        4%{?dist}
+Release:        12%{?dist}
 Summary:        Freeminer is an open source sandbox game inspired by [Minecraft](https://minecraft.net/)
 
 License:        LGPLv2+ and CC-BY-SA and MIT
@@ -84,15 +84,14 @@ mkdir -p %{buildroot}%{_unitdir}
 cp -p %{SOURCE1} %{buildroot}%{_unitdir}
 
 install -d -m 0775 %{buildroot}%{_sysconfdir}/%{name}/
-#install    -m 0775 %{name}.conf.example %{buildroot}%{_sysconfdir}/%{name}/default.conf
+install    -m 0775 %{name}.conf.example %{buildroot}%{_sysconfdir}/%{name}/default.conf
 install -d -m 0775 %{buildroot}%{_sharedstatedir}/%{name}/
 
-%pre
+%pre server
 getent group %{name} >/dev/null || groupadd -r %{name}
 getent passwd %{name} >/dev/null || \
     useradd -r -g %{name} -d %{_sharedstatedir}/%{name}/ -s /sbin/nologin \
     -c "Freeminer multiplayer server" %{name}
-exit 0
 
 
 %post server
