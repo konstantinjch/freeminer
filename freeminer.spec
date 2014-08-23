@@ -1,6 +1,6 @@
 Name:           freeminer
 Version:        0.4.9.3
-Release:        12%{?dist}
+Release:        9%{?dist}
 Summary:        Freeminer is an open source sandbox game inspired by [Minecraft](https://minecraft.net/)
 
 License:        LGPLv2+ and CC-BY-SA and MIT
@@ -8,7 +8,7 @@ URL:            http://freeminer.org/
 Source0:        https://github.com/freeminer/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
 Source1:        %{name}@.service
 Source2:        https://github.com/freeminer/default/archive/%{version}/%{name}_default-%{version}.tar.gz
-
+#Source3:	default.conf
 
 # https://github.com/minetest/minetest/pull/954
 Patch0:         cguittfont.patch
@@ -62,8 +62,6 @@ pushd games
   mv default-%{version}/* default/
 popd
 
-# purge bundled jsoncpp and lua
-# rm -rf src/lua src/json
 
 %build
 pushd build
@@ -86,6 +84,7 @@ cp -p %{SOURCE1} %{buildroot}%{_unitdir}
 install -d -m 0775 %{buildroot}%{_sysconfdir}/%{name}/
 install    -m 0775 %{name}.conf.example %{buildroot}%{_sysconfdir}/%{name}/default.conf
 install -d -m 0775 %{buildroot}%{_sharedstatedir}/%{name}/
+
 
 %pre server
 getent group %{name} >/dev/null || groupadd -r %{name}
@@ -132,6 +131,9 @@ getent passwd %{name} >/dev/null || \
 
 
 %changelog
+
+* Mon Aug 23 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-3
+- mega-update spec
 
 * Mon Aug 19 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-3
 - mega-update spec 
