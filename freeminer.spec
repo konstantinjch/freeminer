@@ -1,23 +1,19 @@
 Name:           freeminer
 Version:        0.4.9.3
-Release:        6%{?dist}
-Summary:        Freeminer is an open source sandbox game inspired by [Minecraft](https://minecraft.net/)
+Release:        7%{?dist}
+Summary:        Open source sandbox game inspired by Minecraft
 
 License:        LGPLv2+ and CC-BY-SA and MIT
 URL:            http://freeminer.org/
 Source0:        https://github.com/freeminer/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
 Source1:        %{name}@.service
 Source2:        https://github.com/freeminer/default/archive/%{version}/%{name}_default-%{version}.tar.gz
-#Source3:	default.conf
+Source3:        default.conf
 
-# https://github.com/minetest/minetest/pull/954
 Patch0:         cguittfont.patch
 Patch1:         add_library_STATIC.patch
-    
-BuildRequires: freetype-devel libXxf86vm-devel mesa-libGL-devel sqlite-devel libvorbis-devel openal-soft-devel
-BuildRequires: leveldb-devel snappy-devel gettext-devel
 
-BuildRequires:  cmake 
+BuildRequires:  cmake
 BuildRequires:  irrlicht-devel
 BuildRequires:  bzip2-devel gettext-devel sqlite-devel
 BuildRequires:  libpng-devel libjpeg-turbo-devel libXxf86vm mesa-libGL-devel
@@ -25,15 +21,15 @@ BuildRequires:  desktop-file-utils
 BuildRequires:  systemd
 BuildRequires:  openal-soft-devel
 BuildRequires:  libvorbis-devel
-BuildRequires:  jsoncpp-devel
+#BuildRequires:  jsoncpp-devel
 BuildRequires:  libcurl-devel
-BuildRequires:  luajit-devel  
-
+BuildRequires:  luajit-devel
+BuildRequires:  freetype-devel
+BuildRequires:  leveldb-devel
 
 Requires:       %{name}-server = %{version}-%{release}
 
-
-%description 
+%description
 Game of mining, crafting and building in the infinite world of cubic
 blocks with optional hostile creatures, features both single and the
 network multiplayer mode. There are no in-game sounds yet
@@ -46,13 +42,11 @@ Requires(post):   systemd
 Requires(preun):  systemd
 Requires(postun): systemd
 
-
 %description server
 freeminer multiplayer server. This package does not require X Window System
 
-
 %prep
-%setup -q 
+%setup -q
 %patch0 -p1
 %patch1 -p1
 
@@ -61,11 +55,12 @@ pushd games
   mv default-%{version}/* default/
 popd
 
+rm -rf src/lua
 
 %build
 pushd build
-  %cmake ../ -DRUN_IN_PLACE=0 -DDEBUG:BOOL=TRUE
-  make  %{?_smp_mflags}  
+  %cmake ../ -DRUN_IN_PLACE=0
+  make %{?_smp_mflags}
 popd
 
 %install
@@ -75,7 +70,6 @@ popd
 
 install -d -m 0755 %{buildroot}%{_sharedstatedir}/%{name}
 
-
 # Systemd unit file
 mkdir -p %{buildroot}%{_unitdir}
 cp -p %{SOURCE1} %{buildroot}%{_unitdir}
@@ -84,6 +78,10 @@ install -d -m 0775 %{buildroot}%{_sysconfdir}/%{name}/
 install    -m 0775 %{name}.conf.example %{buildroot}%{_sysconfdir}/%{name}/default.conf
 install -d -m 0775 %{buildroot}%{_sharedstatedir}/%{name}/
 
+install -d -m 0775 %{buildroot}%{_sysconfdir}/sysconfig/%{name}/
+install    -m 0664 %{SOURCE3} %{buildroot}%{_sysconfdir}/sysconfig/%{name}
+
+rm %{buildroot}%{_pkgdocdir}/*
 
 %pre server
 getent group %{name} >/dev/null || groupadd -r %{name}
@@ -91,45 +89,37 @@ getent passwd %{name} >/dev/null || \
     useradd -r -g %{name} -d %{_sharedstatedir}/%{name}/ -s /sbin/nologin \
     -c "Freeminer multiplayer server" %{name}
 
-
 %post server
-
 %systemd_post %{name}@default.service
 
 %preun server
-
 %systemd_preun %{name}@default.service
 
 %postun server
- 
 %systemd_postun_with_restart %{name}@default.service
 
-%files 
-
-%doc   LICENSE.txt src/jthread/LICENSE.MIT README.md doc/lua_api.txt 
-
+%files
 %{_bindir}/%{name}
 %{_datadir}/%{name}/
-%{_mandir}/man6/%{name}.*
+%{_mandir}/man6/%{name}.6.*
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
 
-
-
-
 %files server
-%{_sharedstatedir}/%{name}/
+%doc LICENSE.txt src/jthread/LICENSE.MIT README.md doc/lua_api.txt
 %{_sysconfdir}/%{name}/
 %{_bindir}/%{name}server
-%{_mandir}/man6/%{name}server.*
+%{_mandir}/man6/%{name}server.6.*
 %{_unitdir}/%{name}@.service
 
-
 %attr(-,%{name},%{name})%{_sharedstatedir}/%{name}/
-
-
+%attr(-,%{name},%{name})%{_sysconfdir}/sysconfig/%{name}/
 
 %changelog
+
+* Mon Aug 25 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-7
+- add Source3:	default.conf
+
 * Mon Aug 25 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-6
 - dell @BuildRequires: make automake gcc gcc-c++ kernel-devel"  
 
