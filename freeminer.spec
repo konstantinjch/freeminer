@@ -1,6 +1,6 @@
 Name:           freeminer
 Version:        0.4.9.3
-Release:        9%{?dist}
+Release:        6%{?dist}
 Summary:        Freeminer is an open source sandbox game inspired by [Minecraft](https://minecraft.net/)
 
 License:        LGPLv2+ and CC-BY-SA and MIT
@@ -13,8 +13,7 @@ Source2:        https://github.com/freeminer/default/archive/%{version}/%{name}_
 # https://github.com/minetest/minetest/pull/954
 Patch0:         cguittfont.patch
 Patch1:         add_library_STATIC.patch
-
-BuildRequires: make automake gcc gcc-c++ kernel-devel    
+    
 BuildRequires: freetype-devel libXxf86vm-devel mesa-libGL-devel sqlite-devel libvorbis-devel openal-soft-devel
 BuildRequires: leveldb-devel snappy-devel gettext-devel
 
@@ -131,11 +130,13 @@ getent passwd %{name} >/dev/null || \
 
 
 %changelog
+* Mon Aug 25 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-6
+- dell @BuildRequires: make automake gcc gcc-c++ kernel-devel"  
 
-* Mon Aug 23 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-3
+* Mon Aug 23 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-5
 - mega-update spec
 
-* Mon Aug 19 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-3
+* Mon Aug 19 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-4
 - mega-update spec 
 
 * Mon Aug 03 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-3
