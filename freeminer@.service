@@ -3,7 +3,7 @@ Description=Freeminer multiplayer server w/ %i.conf server config
 After=syslog.target network.target
 
 [Service]
-EnvironmentFile=/etc/freeminer/%i.conf
+EnvironmentFile=/etc/sysconfig/freeminer/%i.conf
 User=freeminer
 Type=simple
 ExecStart=/usr/bin/freeminerserver --config /etc/freeminer/%i.conf --port $PORT --map-dir /var/lib/freeminer/%i/
