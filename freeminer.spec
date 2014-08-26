@@ -11,6 +11,7 @@ Source2:        https://github.com/freeminer/default/archive/%{version}/%{name}_
 Source3:        default.conf
 Source4:  	%{name}.desktop
 
+
 Patch0:         cguittfont.patch
 Patch1:         add_library_STATIC.patch
 
@@ -22,7 +23,7 @@ BuildRequires:  desktop-file-utils
 BuildRequires:  systemd
 BuildRequires:  openal-soft-devel
 BuildRequires:  libvorbis-devel
-#BuildRequires:  jsoncpp-devel
+BuildRequires:  jsoncpp-devel
 BuildRequires:  libcurl-devel
 BuildRequires:  luajit-devel
 BuildRequires:  freetype-devel
@@ -86,6 +87,7 @@ install -d -m 0775 %{buildroot}%{_sharedstatedir}/%{name}/
 
 install -d -m 0775 %{buildroot}%{_sysconfdir}/sysconfig/%{name}/
 install    -m 0664 %{SOURCE3} %{buildroot}%{_sysconfdir}/sysconfig/%{name}
+desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 
 rm %{buildroot}%{_pkgdocdir}/*
 
@@ -122,6 +124,9 @@ getent passwd %{name} >/dev/null || \
 %attr(-,%{name},%{name})%{_sysconfdir}/sysconfig/%{name}/
 
 %changelog
+* Mon Aug 26 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-9
+- add desktop-file-validate
+
 * Mon Aug 26 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-8
 - add Source4:	default.conf
 
