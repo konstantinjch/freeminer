@@ -9,8 +9,6 @@ Source0:        https://github.com/freeminer/%{name}/archive/%{version}/%{name}-
 Source1:        %{name}@.service
 Source2:        https://github.com/freeminer/default/archive/%{version}/%{name}_default-%{version}.tar.gz
 Source3:        default.conf
-Source4:  	%{name}.desktop
-
 
 Patch0:         cguittfont.patch
 Patch1:         add_library_STATIC.patch
@@ -23,14 +21,13 @@ BuildRequires:  desktop-file-utils
 BuildRequires:  systemd
 BuildRequires:  openal-soft-devel
 BuildRequires:  libvorbis-devel
-BuildRequires:  jsoncpp-devel
+#BuildRequires:  jsoncpp-devel
 BuildRequires:  libcurl-devel
 BuildRequires:  luajit-devel
 BuildRequires:  freetype-devel
 BuildRequires:  leveldb-devel
 
-#Requires:       %{name}-server = %{version}-%{release}
-Requires:       %{name}-server%{?_isa} = %{version}-%{release}
+Requires:       %{name}-server = %{version}-%{release}
 
 %description
 Game of mining, crafting and building in the infinite world of cubic
@@ -73,9 +70,6 @@ pushd build
   %make_install
 popd
 
-# Add desktop file
-desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{SOURCE4}
-
 install -d -m 0755 %{buildroot}%{_sharedstatedir}/%{name}
 
 # Systemd unit file
@@ -88,9 +82,11 @@ install -d -m 0775 %{buildroot}%{_sharedstatedir}/%{name}/
 
 install -d -m 0775 %{buildroot}%{_sysconfdir}/sysconfig/%{name}/
 install    -m 0664 %{SOURCE3} %{buildroot}%{_sysconfdir}/sysconfig/%{name}
-desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 
 rm %{buildroot}%{_pkgdocdir}/*
+
+%check
+desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 
 %pre server
 getent group %{name} >/dev/null || groupadd -r %{name}
@@ -109,14 +105,14 @@ getent passwd %{name} >/dev/null || \
 
 %files
 %{_bindir}/%{name}
-%{_datadir}/%{name}
+%{_datadir}/%{name}/
 %{_mandir}/man6/%{name}.6.*
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
 
 %files server
 %doc LICENSE.txt src/jthread/LICENSE.MIT README.md doc/lua_api.txt
-%{_sysconfdir}/%{name}
+%{_sysconfdir}/%{name}/
 %{_bindir}/%{name}server
 %{_mandir}/man6/%{name}server.6.*
 %{_unitdir}/%{name}@.service
@@ -125,7 +121,6 @@ getent passwd %{name} >/dev/null || \
 %attr(-,%{name},%{name})%{_sysconfdir}/sysconfig/%{name}/
 
 %changelog
-
 * Mon Aug 26 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-10
 -  %{name}-server%{?_isa} = %{version}-%{release}
 
