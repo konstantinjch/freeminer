@@ -1,6 +1,6 @@
 Name:           freeminer
 Version:        0.4.9.3
-Release:        7%{?dist}
+Release:        10%{?dist}
 Summary:        Open source sandbox game inspired by Minecraft
 
 License:        LGPLv2+ and CC-BY-SA and MIT
@@ -29,7 +29,8 @@ BuildRequires:  luajit-devel
 BuildRequires:  freetype-devel
 BuildRequires:  leveldb-devel
 
-Requires:       %{name}-server = %{version}-%{release}
+#Requires:       %{name}-server = %{version}-%{release}
+Requires:       %{name}-server%{?_isa} = %{version}-%{release}
 
 %description
 Game of mining, crafting and building in the infinite world of cubic
@@ -108,14 +109,14 @@ getent passwd %{name} >/dev/null || \
 
 %files
 %{_bindir}/%{name}
-%{_datadir}/%{name}/
+%{_datadir}/%{name}
 %{_mandir}/man6/%{name}.6.*
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
 
 %files server
 %doc LICENSE.txt src/jthread/LICENSE.MIT README.md doc/lua_api.txt
-%{_sysconfdir}/%{name}/
+%{_sysconfdir}/%{name}
 %{_bindir}/%{name}server
 %{_mandir}/man6/%{name}server.6.*
 %{_unitdir}/%{name}@.service
@@ -124,6 +125,10 @@ getent passwd %{name} >/dev/null || \
 %attr(-,%{name},%{name})%{_sysconfdir}/sysconfig/%{name}/
 
 %changelog
+
+* Mon Aug 26 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-10
+-  %{name}-server%{?_isa} = %{version}-%{release}
+
 * Mon Aug 26 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-9
 - add desktop-file-validate
 
