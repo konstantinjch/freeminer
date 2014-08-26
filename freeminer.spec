@@ -1,6 +1,6 @@
 Name:           freeminer
 Version:        0.4.9.3
-Release:        10%{?dist}
+Release:        1%{?dist}
 Summary:        Open source sandbox game inspired by Minecraft
 
 License:        LGPLv2+ and CC-BY-SA and MIT
@@ -10,6 +10,7 @@ Source1:        %{name}@.service
 Source2:        https://github.com/freeminer/default/archive/%{version}/%{name}_default-%{version}.tar.gz
 Source3:        default.conf
 
+#https://github.com/freeminer/freeminer/issues/103
 Patch0:         cguittfont.patch
 Patch1:         add_library_STATIC.patch
 
@@ -121,32 +122,5 @@ getent passwd %{name} >/dev/null || \
 %attr(-,%{name},%{name})%{_sysconfdir}/sysconfig/%{name}/
 
 %changelog
-* Mon Aug 26 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-10
--  %{name}-server%{?_isa} = %{version}-%{release}
-
-* Mon Aug 26 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-9
-- add desktop-file-validate
-
-* Mon Aug 26 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-8
-- add Source4:	default.conf
-
-* Mon Aug 25 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-7
-- add Source3:	default.conf
-
-* Mon Aug 25 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-6
-- dell @BuildRequires: make automake gcc gcc-c++ kernel-devel"  
-
-* Mon Aug 23 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-5
-- mega-update spec
-
-* Mon Aug 19 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-4
-- mega-update spec 
-
-* Mon Aug 03 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-3
-- add -DRUN_IN_PLACE=0 
-
-* Mon Jul 25 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-2
-- mega-update spec
-
 * Mon Jul 14 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-1
-- Initial release
+- Initial package
