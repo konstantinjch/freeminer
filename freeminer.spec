@@ -122,6 +122,8 @@ getent passwd %{name} >/dev/null || \
 %attr(-,%{name},%{name})%{_sysconfdir}/sysconfig/%{name}/
 
 %changelog
+* Mon Aug 26 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-8
+- add Source4:	default.conf
 
 * Mon Aug 25 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-7
 - add Source3:	default.conf
