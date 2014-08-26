@@ -9,6 +9,7 @@ Source0:        https://github.com/freeminer/%{name}/archive/%{version}/%{name}-
 Source1:        %{name}@.service
 Source2:        https://github.com/freeminer/default/archive/%{version}/%{name}_default-%{version}.tar.gz
 Source3:        default.conf
+Source4:  	%{name}.desktop
 
 Patch0:         cguittfont.patch
 Patch1:         add_library_STATIC.patch
@@ -56,6 +57,8 @@ pushd games
 popd
 
 rm -rf src/lua
+# purge bundled jsoncpp
+#rm -rf src/json
 
 %build
 pushd build
@@ -67,6 +70,9 @@ popd
 pushd build
   %make_install
 popd
+
+# Add desktop file
+desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{SOURCE4}
 
 install -d -m 0755 %{buildroot}%{_sharedstatedir}/%{name}
 
