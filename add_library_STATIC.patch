@@ -1,13 +1,115 @@
-diff -uNr freeminer-0.4.9.3/src/json/CMakeLists.txt freeminer-0.4.9.3-1/src/json/CMakeLists.txt
---- freeminer-0.4.9.3/src/json/CMakeLists.txt	2014-01-22 21:36:09.000000000 +0400
-+++ freeminer-0.4.9.3-1/src/json/CMakeLists.txt	2014-08-19 12:56:47.106387980 +0400
-@@ -6,7 +6,8 @@
- 	set(json_platform_LIBS "")
- endif( UNIX )
+diff -urp freeminer-0.4.13.7.orig/src/jsoncpp/CMakeLists.txt freeminer-0.4.13.7/src/jsoncpp/CMakeLists.txt
+--- freeminer-0.4.13.7.orig/src/jsoncpp/CMakeLists.txt	2015-08-20 18:44:06.000000000 +0300
++++ freeminer-0.4.13.7/src/jsoncpp/CMakeLists.txt	2016-01-02 22:50:42.082451987 +0300
+@@ -113,16 +113,8 @@ IF(JSONCPP_WITH_PKGCONFIG_SUPPORT)
+ 		"pkg-config/jsoncpp.pc.in"
+ 		"pkg-config/jsoncpp.pc"
+ 		@ONLY)
+-	INSTALL(FILES "${CMAKE_BINARY_DIR}/pkg-config/jsoncpp.pc"
+-		DESTINATION "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}/pkgconfig")
+ ENDIF(JSONCPP_WITH_PKGCONFIG_SUPPORT)
  
--add_library(jsoncpp ${json_SRCS})
-+#add_library(jsoncpp ${json_SRCS})
-+add_library(jsoncpp STATIC ${json_SRCS})
+-IF(JSONCPP_WITH_CMAKE_PACKAGE)
+-        INSTALL(EXPORT jsoncpp
+-                DESTINATION ${PACKAGE_INSTALL_DIR}/jsoncpp
+-                FILE        jsoncppConfig.cmake)
+-ENDIF(JSONCPP_WITH_CMAKE_PACKAGE)
+-
+ # Build the different applications
+ ADD_SUBDIRECTORY( src )
  
- target_link_libraries(
- 	jsoncpp
+diff -urp freeminer-0.4.13.7.orig/src/jsoncpp/include/CMakeLists.txt freeminer-0.4.13.7/src/jsoncpp/include/CMakeLists.txt
+--- freeminer-0.4.13.7.orig/src/jsoncpp/include/CMakeLists.txt	2015-08-20 18:44:06.000000000 +0300
++++ freeminer-0.4.13.7/src/jsoncpp/include/CMakeLists.txt	2016-01-02 22:53:34.046788361 +0300
+@@ -1,2 +1 @@
+ FILE(GLOB INCLUDE_FILES "json/*.h")
+-INSTALL(FILES ${INCLUDE_FILES} DESTINATION ${INCLUDE_INSTALL_DIR}/json)
+diff -urp freeminer-0.4.13.7.orig/src/jsoncpp/src/lib_json/CMakeLists.txt freeminer-0.4.13.7/src/jsoncpp/src/lib_json/CMakeLists.txt
+--- freeminer-0.4.13.7.orig/src/jsoncpp/src/lib_json/CMakeLists.txt	2015-08-20 18:44:06.000000000 +0300
++++ freeminer-0.4.13.7/src/jsoncpp/src/lib_json/CMakeLists.txt	2016-01-02 22:51:07.969051090 +0300
+@@ -39,42 +39,14 @@ ELSE(JSONCPP_WITH_CMAKE_PACKAGE)
+     SET(INSTALL_EXPORT)
+ ENDIF(JSONCPP_WITH_CMAKE_PACKAGE)
+ 
+-IF(BUILD_SHARED_LIBS)
+-    ADD_DEFINITIONS( -DJSON_DLL_BUILD )
+-    ADD_LIBRARY(jsoncpp_lib SHARED ${PUBLIC_HEADERS} ${jsoncpp_sources})
+-    SET_TARGET_PROPERTIES( jsoncpp_lib PROPERTIES VERSION ${JSONCPP_VERSION} SOVERSION ${JSONCPP_VERSION_MAJOR})
+-    SET_TARGET_PROPERTIES( jsoncpp_lib PROPERTIES OUTPUT_NAME jsoncpp
+-                           DEBUG_OUTPUT_NAME jsoncpp${DEBUG_LIBNAME_SUFFIX} )
+-
+-    INSTALL( TARGETS jsoncpp_lib ${INSTALL_EXPORT}
+-         RUNTIME DESTINATION ${RUNTIME_INSTALL_DIR}
+-         LIBRARY DESTINATION ${LIBRARY_INSTALL_DIR}
+-         ARCHIVE DESTINATION ${ARCHIVE_INSTALL_DIR})
+-
+-    IF(NOT CMAKE_VERSION VERSION_LESS 2.8.11)
+-        TARGET_INCLUDE_DIRECTORIES( jsoncpp_lib PUBLIC
+-                                   $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+-                                   $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/${JSONCPP_INCLUDE_DIR}>)
+-    ENDIF(NOT CMAKE_VERSION VERSION_LESS 2.8.11)
+-
+-ENDIF()
+-
+-IF(BUILD_STATIC_LIBS)
+     ADD_LIBRARY(jsoncpp_lib_static STATIC ${PUBLIC_HEADERS} ${jsoncpp_sources})
+     SET_TARGET_PROPERTIES( jsoncpp_lib_static PROPERTIES VERSION ${JSONCPP_VERSION} SOVERSION ${JSONCPP_VERSION_MAJOR})
+     SET_TARGET_PROPERTIES( jsoncpp_lib_static PROPERTIES OUTPUT_NAME jsoncpp
+                            DEBUG_OUTPUT_NAME jsoncpp${DEBUG_LIBNAME_SUFFIX} )
+ 
+-    INSTALL( TARGETS jsoncpp_lib_static ${INSTALL_EXPORT}
+-         RUNTIME DESTINATION ${RUNTIME_INSTALL_DIR}
+-         LIBRARY DESTINATION ${LIBRARY_INSTALL_DIR}
+-             ARCHIVE DESTINATION ${ARCHIVE_INSTALL_DIR})
+-
+     IF(NOT CMAKE_VERSION VERSION_LESS 2.8.11)
+         TARGET_INCLUDE_DIRECTORIES( jsoncpp_lib_static PUBLIC
+                                 $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+                                 $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/${JSONCPP_INCLUDE_DIR}>
+                                 )
+      ENDIF(NOT CMAKE_VERSION VERSION_LESS 2.8.11)
+-
+-ENDIF()
+diff -urp freeminer-0.4.13.7.orig/src/msgpack-c/CMakeLists.txt freeminer-0.4.13.7/src/msgpack-c/CMakeLists.txt
+--- freeminer-0.4.13.7.orig/src/msgpack-c/CMakeLists.txt	2015-08-20 18:44:10.000000000 +0300
++++ freeminer-0.4.13.7/src/msgpack-c/CMakeLists.txt	2016-01-02 22:50:09.065963301 +0300
+@@ -164,19 +164,12 @@ INCLUDE_DIRECTORIES (
+     ${CMAKE_CURRENT_BINARY_DIR}/include/
+ )
+ 
+-ADD_LIBRARY (msgpack SHARED
+-    ${msgpack_SOURCES}
+-    ${msgpack_HEADERS}
+-)
+-
+ ADD_LIBRARY (msgpack-static STATIC
+     ${msgpack_SOURCES}
+     ${msgpack_HEADERS}
+ )
+ 
+ SET_TARGET_PROPERTIES (msgpack-static PROPERTIES OUTPUT_NAME "msgpack")
+-SET_TARGET_PROPERTIES (msgpack PROPERTIES IMPORT_SUFFIX "_import.lib")
+-SET_TARGET_PROPERTIES (msgpack PROPERTIES SOVERSION 3 VERSION 4.0.0)
+ 
+ IF (MSGPACK_BUILD_TESTS)
+     ENABLE_TESTING ()
+@@ -187,7 +180,6 @@ IF (MSGPACK_BUILD_TESTS)
+ ENDIF ()
+ 
+ IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+-    SET_PROPERTY (TARGET msgpack APPEND_STRING PROPERTY COMPILE_FLAGS "-Wall -g -O3 -DPIC")
+     SET_PROPERTY (TARGET msgpack-static APPEND_STRING PROPERTY COMPILE_FLAGS "-Wall -g -O3" )
+ ENDIF ()
+ IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+@@ -206,10 +198,6 @@ IF (NOT DEFINED CMAKE_INSTALL_LIBDIR)
+     SET(CMAKE_INSTALL_LIBDIR lib)
+ ENDIF ()
+ 
+-INSTALL (TARGETS msgpack msgpack-static DESTINATION ${CMAKE_INSTALL_LIBDIR})
+-INSTALL (DIRECTORY include DESTINATION ${CMAKE_INSTALL_PREFIX})
+-INSTALL (FILES ${CMAKE_CURRENT_BINARY_DIR}/msgpack.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+-
+ # Doxygen
+ FIND_PACKAGE (Doxygen)
+ IF (DOXYGEN_FOUND)
+
