@@ -1,11 +1,11 @@
 Name:           freeminer
-Version:        0.4.9.3
+Version:        0.4.13.7
 Release:        1%{?dist}
 Summary:        Open source sandbox game inspired by Minecraft
 
 License:        LGPLv2+ and CC-BY-SA and MIT
 URL:            http://freeminer.org/
-Source0:        https://github.com/freeminer/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
+Source0:        https://github.com/freeminer/%{name}/archive/%{version}/%{name}-%{version}.zip
 Source1:        %{name}@.service
 Source2:        https://github.com/freeminer/default/archive/%{version}/%{name}_default-%{version}.tar.gz
 Source3:        default.conf
@@ -22,11 +22,11 @@ BuildRequires:  desktop-file-utils
 BuildRequires:  systemd
 BuildRequires:  openal-soft-devel
 BuildRequires:  libvorbis-devel
-#BuildRequires:  jsoncpp-devel
 BuildRequires:  libcurl-devel
 BuildRequires:  luajit-devel
 BuildRequires:  freetype-devel
 BuildRequires:  leveldb-devel
+BuildRequires:  snappy-devel
 
 Requires:       %{name}-server = %{version}-%{release}
 
@@ -51,10 +51,10 @@ freeminer multiplayer server. This package does not require X Window System
 %patch0 -p1
 %patch1 -p1
 
-pushd games
-  tar xf %{SOURCE2}
-  mv default-%{version}/* default/
-popd
+#pushd games
+#  tar xf %{SOURCE2}
+#  mv default-%{version}/* default/
+#popd
 
 rm -rf src/lua
 # purge bundled jsoncpp
@@ -88,6 +88,7 @@ rm %{buildroot}%{_pkgdocdir}/*
 
 %check
 desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
+appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/appdata/%{name}.appdata.xml
 
 %pre server
 getent group %{name} >/dev/null || groupadd -r %{name}
@@ -109,6 +110,7 @@ getent passwd %{name} >/dev/null || \
 %{_datadir}/%{name}/
 %{_mandir}/man6/%{name}.6.*
 %{_datadir}/applications/%{name}.desktop
+%{_datadir}/appdata/%{name}.appdata.xml
 %{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
 
 %files server
@@ -124,3 +126,6 @@ getent passwd %{name} >/dev/null || \
 %changelog
 * Mon Jul 14 2014  Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.9.3-1
 - Initial package
+
+*Mon Jan 03 2016 Vladimir Karandin  <konstantinjch@mail.ru> - 0.4.13.7
+- Update 
