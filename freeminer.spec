@@ -27,6 +27,8 @@ BuildRequires:  luajit-devel
 BuildRequires:  freetype-devel
 BuildRequires:  leveldb-devel
 BuildRequires:  snappy-devel
+BuildRequires:  msgpack-devel
+BuildRequires:  libappstream-glib
 
 Requires:       %{name}-server = %{version}-%{release}
 
